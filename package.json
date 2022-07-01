@@ -1,0 +1,14 @@
+{
+  "name": "ftpserver",
+  "version": "1.0.0",
+  "description": "All the dependencies required to run the ftpServer",
+  "main": "nodeRoutes.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
