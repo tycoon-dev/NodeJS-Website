@@ -17,10 +17,27 @@
   <body>
 
 
-        <nav class="navbar navbar-light bg-light">
-            <a class="navbar-brand" href="#">ServerX</a>
-            <a class="loginButton" href="/login"><button class="btn my-2 my-sm-0" type="submit">Login</button></a>
-        </nav>
+        <div class="loginBox">
+            <form action="/successfulLogin">
+                <div class="loginHeader">
+                    Login
+               </div>
+                <div class="loginBox2">
+                <div class="loginName">
+                    <input type="text" name="name" id="name" placeholder="User Name"> 
+                </div>
+               <div class="loginPassword">
+                    <input type="text" name="password" id="password" placeholder="Password"> 
+               </div>       
+            </div>
+               <div class="loginRecover">
+                    <a href="/recover.html">Forgot Password? Click here to recover</a>
+               </div>
+              <div class="loginSubmit">
+                    <input type="submit" value="Login"> 
+              </div>
+            </form>
+        </div>
 
 
 

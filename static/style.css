@@ -1,7 +1,58 @@
 body {
-    background-color: darkblue;
+    background-color: rgb(14, 14, 26);
   }
 .loginButton{
-    color: blue;
+    color: gray;
 
+}
+
+.loginBox{
+    margin: auto;
+    margin-top:20%;
+    
+}
+
+
+.loginBox2{
+    margin: auto;
+    
+    width: 30%;
+    border: 3px solid whitesmoke;
+    border-radius: 3px;
+    padding: 10px;
+}
+
+.loginHeader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color:white;
+}
+
+.loginName{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginPassword{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginRecover{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginSubmit{
+    display: flex;
+  justify-content: center;
+  align-items: center;
 }
