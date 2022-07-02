@@ -13,6 +13,10 @@ router.get('/login',function(req,res){
   res.sendFile(path.join(__dirname+'/static/login.html'));
 });
 
+
+// Put ROUTES BEING USED IN SERVER
+
+
 app.use('/', router);
 app.use('/login',router)
 app.use(express.static(__dirname + '/static'));

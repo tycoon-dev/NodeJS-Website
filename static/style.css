@@ -1,6 +1,43 @@
 body {
     background-color: rgb(14, 14, 26);
+    color:white;
   }
+
+
+.col{
+    border:1px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.col-10{
+    border:1px solid white;
+
+}
+
+.col-2{
+    border:1px solid white;
+
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    margin-left:auto;
+    width:100%;
+}
+.container-fluid{
+    border:1px solid white;
+    margin-top:10px;
+
+}
+
+
+
 .loginButton{
     color: gray;
 
@@ -56,3 +93,13 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.btn{
+    color:rgb(255, 255, 255);
+    background-color: rgb(23, 82, 150);
+}
+
+.btn:hover {
+   
+    color: white;
+  }
