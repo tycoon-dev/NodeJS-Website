@@ -22,11 +22,11 @@
 
             <div class="navbar items">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                   <a class="nav-link" href="/home">Dashboard <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/upload">Uploads</a>
+                  <a class="nav-link active" href="/upload">Uploads</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/download">Downloads</a>
@@ -43,47 +43,29 @@
 
         <div class="container-fluid">
           <div class="row">
-            <div class="col-10">
-              <h1>Server Files</h1>
-            </div>
-            <div class="col-2">
-              <form class="form-inline my-2 my-sm-2">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline my-0 my-sm-2" type="submit">Find</button>
-              </form>
+            <div class="col-12">
+              <h1>Upload a File</h1>
             </div>
           </div>
           
           
           <div class="row">
-                </div>
-                <div class="col-12">
-
-                    <table class="table table-bordered table-dark">
-                        <thead>
-                          <tr>
-                            <th scope="col">File Type</th>
-                            <th scope="col">File Name</th>
-                            <th scope="col">Last Modified</th>
-                            <th scope="col">Created At</th>
-                            <th scope="col">Options</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>txt</td>
-                            <td>testelolz</td>
-                            <td>13-02-2022</td>
-                            <td>11-01-2021</td>
-                            <td>
-                                <input type="button" value="Download">
-                                <input type="button" value="Delete">
-                            </td>
-                          </tr>
-
-                        </tbody>
-                      </table>
-                </div>
+                
+                  <div class="col-12">
+                        <form>
+                          <div class="fileName">
+                            <label for="fileName">Write down your File name</label>
+                            <input type="text" name="fileName" id="fileName" placeholder="Filename">
+                          </div>
+                          <div class="file">
+                            <label for="file">Insert your File</label>
+                            <input type="file" name="file" id="file">
+                          </div>
+                          <div class="submit">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                          </div>
+                        </form>
+                  </div>
             </div>
         </div>
         
