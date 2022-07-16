@@ -10,13 +10,13 @@ const app = express();
 
 const port=21;
 const ftpServer = new ftp({
-    url: "ftp://0.0.0.0:" + port,
+    url: "ftp://127.0.0.1:" + port,
     anonymous: true
 });
 
 ftpServer.on('login', (data, resolve, reject) => { 
-  if(data.username === 'anonymous' && data.password === 'anonymous'){
-      return resolve({ root:"/" });    
+  if(data.username === 'ruben' && data.password === 'test'){
+      return resolve({root: path.join(__dirname+'/')});    
   }
   return reject(new errors.GeneralError('Invalid username or password', 401));
 });
