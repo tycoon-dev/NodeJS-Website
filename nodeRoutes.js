@@ -151,6 +151,7 @@ try {
 }
 
 const credentials = {
+  //you need to add your own key and cert here
   key: fs.readFileSync(__dirname+'\\servkeys\\privateKey.key'),
   cert: fs.readFileSync(__dirname+'\\servkeys\\certificate.crt')
 };
