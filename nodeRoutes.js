@@ -8,10 +8,12 @@ const ftp = require('ftp-srv');
 const path = require('path');
 const { isAsyncFunction } = require('util/types');
 const app = express();
+var https = require('https');
 
 app.set('view engine', 'ejs')
 
 const port=21;
+
 const ftpServer = new ftp({
     url: "ftp://127.0.0.1:" + port,
     anonymous: true
@@ -24,9 +26,13 @@ ftpServer.on('login', (data, resolve, reject) => {
   return reject(new errors.GeneralError('Invalid username or password', 401));
 });
 
-ftpServer.listen().then(() => { 
-  console.log('Ftp server is starting...')
-});
+try {
+  ftpServer.listen().then(() => { 
+    console.log('ftp server started');
+  });
+} catch {
+  console.log('ftp server failed');
+}
 
 const router = express.Router();
 
@@ -108,11 +114,7 @@ router.post('/login',function(req,res){
 });
 
 router.post('/upload',function(req,res){
-
   const {fileName, file} = req.body;
-  
-
-
 });
 
 router.post('/settings',function(req,res){
@@ -141,6 +143,21 @@ app.use('/upload',router)
 app.use('/settings',router)
 app.use(express.static(__dirname + '/static'));
 
-app.listen(process.env.port || 3000);
+try {
+  app.listen(process.env.port || 80);
+  console.log('Running http at Port 80');
+} catch {
+  console.log('http server failed');
+}
 
-console.log('Running at Port 3000');
+const credentials = {
+  key: fs.readFileSync(__dirname+'\\servkeys\\privateKey.key'),
+  cert: fs.readFileSync(__dirname+'\\servkeys\\certificate.crt')
+};
+
+try {
+  https.createServer(credentials, app).listen(443);
+  console.log('Running https at Port 443');
+} catch {
+  console.log('https server failed');
+}
