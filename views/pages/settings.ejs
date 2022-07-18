@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>--- TODO ---</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+  </head>
+  <body>
+
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">ServerX</a>
+
+            <div class="navbar items">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="/home">Dashboard <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/upload">Uploads</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/download">Downloads</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="/settings">Settings</a>
+                </li>
+              </ul>
+              <div class="logout">
+                <a href="/"><button class="btn my-2 my-sm-0">Logout</button></a>
+              </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <h1>Settings</h1>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-12">
+                <div class="darkMode">
+                  <p>Select background mode</p>
+                  <form action="/settings">
+                    <input type="submit" name="lightMode" value="Light Mode">
+                    <input type="submit" name="darkMode" value="Dark Mode">  
+                  </form>
+                </div>
+              </div>
+          </div>
+        </div>
+        
+
+
+    <!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </body>
+</html>

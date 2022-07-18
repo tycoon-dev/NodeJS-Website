@@ -1,12 +1,15 @@
 const fs = require('fs');
 const express = require('express');
+const ejs = require('ejs');
 const exphbs = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const ftp = require('ftp-srv');
 const path = require('path');
+const { isAsyncFunction } = require('util/types');
 const app = express();
 
+app.set('view engine', 'ejs')
 
 const port=21;
 const ftpServer = new ftp({
@@ -27,6 +30,7 @@ ftpServer.listen().then(() => {
 
 const router = express.Router();
 
+// NEED TO PUT USERLIST IN SOME SORT OF .JSON FILE INSTEAD OF HAVING IT HERE
 const userList = [{
 
 username: "ruben",
@@ -34,47 +38,73 @@ password: "test"
 
 }];
 
-const serverFileNames = [];
+function readFileNames() {
 
+const serverFileNames = [];
+let stats;
 fs.readdirSync("./server/").forEach(file => {
+  stats = fs.statSync('./server/'+file)
+  serverFileNames.push({
+    fileName: file,
+    extension: path.extname(file),
+    size: stats.size,
+    createdAt: stats.birthtime
+  });
   serverFileNames.push(file);
 });
-
 console.log(serverFileNames);
+return serverFileNames;
+}
+
+function authenticateUser(username,password){
+  const user = userList.find(u => {return username == u.username && password == u.password});
+  
+  if (user != null){
+    return true;
+  
+  }
+  else{
+    return false;
+  }
+
+}
+
+
 
 router.get('/',function(req,res){
-  res.sendFile(path.join(__dirname+'/static/index.html'));
+  res.render('pages/index');
 });
 router.get('/login',function(req,res){
-  res.sendFile(path.join(__dirname+'/static/login.html'));
+  res.render('pages/login');
+});
+router.get('/home', function(req,res){
+  const serverFileNames = readFileNames();
+  res.render('pages/home', {
+    files: serverFileNames
+  });
 });
 router.get('/register', function(req,res){
   res.sendFile(path.join(__dirname+'/static/register.html'));
 });
 router.get('/download', function(req,res){
-  res.sendFile(path.join(__dirname+'/static/download.html'));
+  res.render('pages/download');
 });
 router.get('/upload', function(req,res){
-  res.sendFile(path.join(__dirname+'/static/upload.html'));
+  res.render('pages/upload');
 });
 router.get('/settings', function(req,res){
-  res.sendFile(path.join(__dirname+'/static/settings.html'));
+  res.render('pages/settings');
 });
 
 router.post('/login',function(req,res){
-
-const {username, password} = req.body;
-const user = userList.find(u => {return username == u.username && password == u.password});
-console.log(req.body);
-
-if (user != null){
-  res.sendFile(path.join(__dirname+'/static/user.html'));
-
-}
-else{
-  res.sendFile(path.join(__dirname+'/static/login.html'));
-}
-
+  const {username, password} = req.body;
+  userAuth = authenticateUser(username, password);
+  if (userAuth == true){
+    res.redirect('/home');
+  }
+  else{
+    res.render('pages/login');
+  }
 });
 
 router.post('/upload',function(req,res){

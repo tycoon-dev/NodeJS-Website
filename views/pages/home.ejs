@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>--- TODO ---</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+  </head>
+  <body>
+
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">ServerX</a>
+
+            <div class="navbar items">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/home">Dashboard <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/upload">Uploads</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/download">Downloads</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/settings">Settings</a>
+                </li>
+              </ul>
+              <div class="logout">
+                <a href="/"><button class="btn my-2 my-sm-0">Logout</button></a>
+              </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-10">
+              <h1>Server Files</h1>
+            </div>
+            <div class="col-2">
+              <form class="form-inline my-2 my-sm-2">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline my-0 my-sm-2" type="submit">Find</button>
+              </form>
+            </div>
+          </div>
+          
+          
+          <div class="row">
+                </div>
+                <div class="col-12">
+
+                    <table class="table table-bordered table-dark">
+                        <thead>
+                          <tr>
+                            <th scope="col">File Type</th>
+                            <th scope="col">File Name</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Created At</th>
+                            <th scope="col">Options</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <% files.forEach((file) => {%>
+                          <tr>
+                                
+                                <td><%= file.extension %></td>
+                                <td><%= file.fileName %></td>
+                                <td><%= file.size %></td>
+                                <td><%= file.createdAt %></td>
+                                <td>
+                                    <input type="button" value="Download">
+                                    <input type="button" value="Delete">
+                                </td>
+                          </tr>
+                            <% }) %>
+
+                         
+
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+        
+
+
+    <!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </body>
+</html>
