@@ -16,7 +16,8 @@ const port=21;
 
 const ftpServer = new ftp({
     url: "ftp://127.0.0.1:" + port,
-    anonymous: true
+    anonymous: true,
+    tls: true
 });
 
 ftpServer.on('login', (data, resolve, reject) => { 
@@ -74,8 +75,6 @@ function authenticateUser(username,password){
   }
 
 }
-
-
 
 router.get('/',function(req,res){
   res.render('pages/index');
@@ -152,8 +151,8 @@ try {
 
 const credentials = {
   //you need to add your own key and cert here
-  key: fs.readFileSync(__dirname+'\\servkeys\\privateKey.key'),
-  cert: fs.readFileSync(__dirname+'\\servkeys\\certificate.crt')
+  key: fs.readFileSync(__dirname+'\\privateKey.key'),
+  cert: fs.readFileSync(__dirname+'\\certificate.crt')
 };
 
 try {
