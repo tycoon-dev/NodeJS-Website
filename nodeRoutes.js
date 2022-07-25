@@ -187,7 +187,7 @@ try {
 } catch {
   console.log('http server failed');
 }
-/*
+
 const credentials = {
   //you need to add your own key and cert here
   key: fs.readFileSync(__dirname+'\\privateKey.key'),
@@ -202,4 +202,3 @@ try {
 } catch {
   console.log('https server failed');
 }
-*/
