@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const ftp = require('ftp-srv');
 const path = require('path');
+const multer = require('multer');
 const { isAsyncFunction } = require('util/types');
 const app = express();
 var https = require('https');
@@ -34,6 +35,20 @@ try {
 } catch {
   console.log('ftp server failed');
 }
+
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./server");
+  },
+  filename: (req, file, cb) => {
+    const ext = file.mimetype.split("/")[1];
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({
+  storage: multerStorage
+});
 
 const router = express.Router();
 
@@ -112,10 +127,6 @@ router.post('/login',function(req,res){
   }
 });
 
-router.post('/upload',function(req,res){
-  const {fileName, file} = req.body;
-});
-
 router.post('/settings',function(req,res){
 
   action = req.body.action;
@@ -126,6 +137,28 @@ router.post('/settings',function(req,res){
   if(action == "darkMode"){
     res.cookie('background','lightMode');
   }
+
+});
+
+router.post('/upload',upload.single("singlefile"),async(req,res)=>{
+    try{
+      if(req.file){
+        res.redirect('/home');
+      }
+      else{
+        res.redirect('/upload');
+      }
+
+
+    }
+    catch(error){
+      res.status(403).json({
+        status: "Failure!",
+        message: "File was not uploaded",
+      });
+
+    }
+    
 
 });
 
@@ -154,6 +187,8 @@ const credentials = {
   key: fs.readFileSync(__dirname+'\\privateKey.key'),
   cert: fs.readFileSync(__dirname+'\\certificate.crt')
 };
+
+
 
 try {
   https.createServer(credentials, app).listen(443);
