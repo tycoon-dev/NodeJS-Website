@@ -11,6 +11,7 @@ const { isAsyncFunction } = require('util/types');
 const app = express();
 var https = require('https');
 
+
 app.set('view engine', 'ejs')
 
 const port=21;
@@ -112,9 +113,19 @@ router.get('/download', function(req,res){
 router.get('/download/:filename', function(req,res){
   const filename = req.params.filename;
   const file = `${__dirname}/server/${filename}`;
-  res.download(file); // Set disposition and send it.
-  
+  res.download(file);
 });
+
+router.get('/delete/:filename', function(req,res){
+  const filename = req.params.filename;
+  const file = `${filename}`;
+  
+  fs.unlink(`${__dirname}/server/${file}`, (err) => {
+    if (err) throw err;
+    res.redirect('/home');
+  });
+});
+
 router.get('/upload', function(req,res){
   res.render('pages/upload');
 });
@@ -187,6 +198,7 @@ try {
 } catch {
   console.log('http server failed');
 }
+
 
 const credentials = {
   //you need to add your own key and cert here

@@ -79,7 +79,7 @@
                                 <td><%= file.createdAt %></td>
                                 <td>
                                     <a href="download/<%- file.fileName %>"><input type="button" value="Download"></a>
-                                    <input type="button" value="Delete">
+                                    <a href="delete/<%- file.fileName %>"><input type="button" value="Delete"></a>
                                 </td>
                           </tr>
                             <% }) %>
