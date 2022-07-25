@@ -109,6 +109,12 @@ router.get('/register', function(req,res){
 router.get('/download', function(req,res){
   res.render('pages/download');
 });
+router.get('/download/:filename', function(req,res){
+  const filename = req.params.filename;
+  const file = `${__dirname}/server/${filename}`;
+  res.download(file); // Set disposition and send it.
+  
+});
 router.get('/upload', function(req,res){
   res.render('pages/upload');
 });
@@ -181,7 +187,7 @@ try {
 } catch {
   console.log('http server failed');
 }
-
+/*
 const credentials = {
   //you need to add your own key and cert here
   key: fs.readFileSync(__dirname+'\\privateKey.key'),
@@ -196,3 +202,4 @@ try {
 } catch {
   console.log('https server failed');
 }
+*/
