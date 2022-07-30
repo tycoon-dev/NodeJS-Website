@@ -55,7 +55,7 @@
                         <form action="/upload"enctype="multipart/form-data" method="post">
                           <div class="fileName">
                             <label for="fileName">Write down your File name</label>
-                            <input type="text" name="fileName" id="fileName" placeholder="Filename">
+                            <input type="text" name="fileName" id="fileName" placeholder="Filename" pattern="[a-zA-Z0-9-]+">
                           </div>
                           <div class="file">
                             <label for="file">Insert your File</label>

@@ -43,7 +43,7 @@ const multerStorage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const ext = file.mimetype.split("/")[1];
-    cb(null, file.originalname);
+    cb(null, req.body.fileName +"."+ext);
   },
 });
 
@@ -73,7 +73,6 @@ fs.readdirSync("./server/").forEach(file => {
     size: stats.size,
     createdAt: stats.birthtime
   });
-  serverFileNames.push(file);
 });
 console.log(serverFileNames);
 return serverFileNames;
@@ -90,6 +89,12 @@ function authenticateUser(username,password){
     return false;
   }
 
+}
+
+function writeLog(typeOfAction,filename,user){
+  var stream = fs.createWriteStream("logs/logs.txt", {flags:'a'});
+  stream.write("User "+user+ " performed " + typeOfAction + " on " + new Date().toUTCString() +" for the file "+ filename + "\n");
+  stream.end();
 }
 
 router.get('/',function(req,res){
@@ -111,6 +116,7 @@ router.get('/download', function(req,res){
   res.render('pages/download');
 });
 router.get('/download/:filename', function(req,res){
+  writeLog("downloaded",req.params.filename, "Ruben"); // NEED TO ADD USER LIST OF SOME SORT TO LOG WHO IS DOING WHAT
   const filename = req.params.filename;
   const file = `${__dirname}/server/${filename}`;
   res.download(file);
@@ -122,6 +128,7 @@ router.get('/delete/:filename', function(req,res){
   
   fs.unlink(`${__dirname}/server/${file}`, (err) => {
     if (err) throw err;
+    writeLog("deleted",req.params.filename, "Ruben")  // NEED TO ADD USER LIST OF SOME SORT TO LOG WHO IS DOING WHAT
     res.redirect('/home');
   });
 });
@@ -145,7 +152,6 @@ router.post('/login',function(req,res){
 });
 
 router.post('/settings',function(req,res){
-
   action = req.body.action;
   console.log(req.body.action);
   if(action == "lightMode"){
@@ -154,19 +160,17 @@ router.post('/settings',function(req,res){
   if(action == "darkMode"){
     res.cookie('background','lightMode');
   }
-
 });
 
 router.post('/upload',upload.single("singlefile"),async(req,res)=>{
     try{
       if(req.file){
+        writeLog("uploaded",req.body.fileName, "Ruben")  // NEED TO ADD USER LIST OF SOME SORT TO LOG WHO IS DOING WHAT
         res.redirect('/home');
       }
       else{
         res.redirect('/upload');
       }
-
-
     }
     catch(error){
       res.status(403).json({
@@ -175,8 +179,6 @@ router.post('/upload',upload.single("singlefile"),async(req,res)=>{
       });
 
     }
-    
-
 });
 
 
