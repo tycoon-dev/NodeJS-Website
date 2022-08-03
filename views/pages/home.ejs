@@ -51,6 +51,26 @@
                 <button class="btn btn-outline my-0 my-sm-2" id="searchSubmit">Find</button>
             </div>
           </div>
+          <div class="row">
+              <div class="col-12">
+                <h2>Current Folder: <%=currentFolder%> </h2>
+                <table class="table table-bordered table-dark table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Sub-folders</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% folders.forEach((folder) => {%>
+                      <tr>    
+                          <td><a href="/home/<%- folder%>"><%= folder%> </a></td>
+                      </tr>
+                    <% }) %>
+                
+                  </tbody>
+                </table>
+              </div>
+          </div>
           
           
           <div class="row">

@@ -1,2 +1,4 @@
 node_modules/
 nodeRoutes copy.js
+certificate.crt 
+privateKey.key

@@ -4,7 +4,6 @@ const ejs = require('ejs');
 const exphbs = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const ftp = require('ftp-srv');
 const path = require('path');
 const multer = require('multer');
 const { isAsyncFunction } = require('util/types');
@@ -12,30 +11,7 @@ const app = express();
 var https = require('https');
 
 
-app.set('view engine', 'ejs')
-
-const port=21;
-
-const ftpServer = new ftp({
-    url: "ftp://127.0.0.1:" + port,
-    anonymous: true,
-    tls: true
-});
-
-ftpServer.on('login', (data, resolve, reject) => { 
-  if(data.username === 'ruben' && data.password === 'test'){
-      return resolve({root: path.join(__dirname+'/')});    
-  }
-  return reject(new errors.GeneralError('Invalid username or password', 401));
-});
-
-try {
-  ftpServer.listen().then(() => { 
-    console.log('ftp server started');
-  });
-} catch {
-  console.log('ftp server failed');
-}
+app.set('view engine', 'ejs');
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -61,21 +37,28 @@ password: "test"
 
 }];
 
-function readFileNames() {
-
-const serverFileNames = [];
-let stats;
-fs.readdirSync("./server/").forEach(file => {
-  stats = fs.statSync('./server/'+file)
-  serverFileNames.push({
-    fileName: file,
-    extension: path.extname(file),
-    size: stats.size,
-    createdAt: stats.birthtime
+function readFileNames(currentFolder="") {
+  const serverFileNames = [];
+  let stats;
+  fs.readdirSync("./server/"+currentFolder).forEach(file => {
+    stats = fs.statSync('./server/'+currentFolder+"/"+file);
+    if(stats.isFile() == true){
+      serverFileNames.push({
+        fileName: file,
+        extension: path.extname(file),
+        size: stats.size,
+        createdAt: stats.birthtime
+      });
+    }
   });
-});
-console.log(serverFileNames);
-return serverFileNames;
+  console.log(serverFileNames);
+  return serverFileNames;
+}
+
+function readFolder(currentFolder=""){
+  return fs.readdirSync("./server/"+currentFolder).filter(function (file) {
+    return fs.statSync("./server/"+currentFolder+'/'+file).isDirectory();
+  });
 }
 
 function authenticateUser(username,password){
@@ -91,10 +74,18 @@ function authenticateUser(username,password){
 
 }
 
-function writeLog(typeOfAction,filename,user){
+function writeLog(typeOfAction,user,filename){
+  if (arguments.length == 3){
   var stream = fs.createWriteStream("logs/logs.txt", {flags:'a'});
   stream.write("User "+user+ " performed " + typeOfAction + " on " + new Date().toUTCString() +" for the file "+ filename + "\n");
   stream.end();
+  }
+
+  else{
+    var stream = fs.createWriteStream("logs/logs.txt", {flags:'a'});
+    stream.write("User "+user+ " performed " + typeOfAction + " on " + new Date().toUTCString() + "\n");
+    stream.end();
+  }
 }
 
 router.get('/',function(req,res){
@@ -105,8 +96,20 @@ router.get('/login',function(req,res){
 });
 router.get('/home', function(req,res){
   const serverFileNames = readFileNames();
+  const folders = readFolder();
   res.render('pages/home', {
-    files: serverFileNames
+    files: serverFileNames,
+    folders: folders,
+    currentFolder: "Home"
+  });
+});
+router.get('/home/:folder', function(req,res){
+  const serverFileNames = readFileNames(req.params.folder);
+  const folders = readFolder(req.params.folder);
+  res.render('pages/home', {
+    files: serverFileNames,
+    folders: folders,
+    currentFolder:req.params.folder
   });
 });
 router.get('/register', function(req,res){
@@ -121,7 +124,6 @@ router.get('/download/:filename', function(req,res){
   const file = `${__dirname}/server/${filename}`;
   res.download(file);
 });
-
 router.get('/delete/:filename', function(req,res){
   const filename = req.params.filename;
   const file = `${filename}`;
@@ -132,14 +134,12 @@ router.get('/delete/:filename', function(req,res){
     res.redirect('/home');
   });
 });
-
 router.get('/upload', function(req,res){
   res.render('pages/upload');
 });
 router.get('/settings', function(req,res){
   res.render('pages/settings');
 });
-
 router.post('/login',function(req,res){
   const {username, password} = req.body;
   userAuth = authenticateUser(username, password);
@@ -150,7 +150,6 @@ router.post('/login',function(req,res){
     res.render('pages/login');
   }
 });
-
 router.post('/settings',function(req,res){
   action = req.body.action;
   console.log(req.body.action);
@@ -161,7 +160,6 @@ router.post('/settings',function(req,res){
     res.cookie('background','lightMode');
   }
 });
-
 router.post('/upload',upload.single("singlefile"),async(req,res)=>{
     try{
       if(req.file){
@@ -187,6 +185,7 @@ router.post('/upload',upload.single("singlefile"),async(req,res)=>{
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/', router);
+app.use('/home',router);
 app.use('/login',router)
 app.use('/register',router)
 app.use('/download',router)
@@ -201,7 +200,7 @@ try {
   console.log('http server failed');
 }
 
-
+/*
 const credentials = {
   //you need to add your own key and cert here
   key: fs.readFileSync(__dirname+'\\privateKey.key'),
@@ -216,3 +215,5 @@ try {
 } catch {
   console.log('https server failed');
 }
+*/
+module.exports = writeLog; // WILL NEED TO WRITE A JS FILE JUST FOR SCRIPTS I SUPPOSE
